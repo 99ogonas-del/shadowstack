@@ -60,6 +60,8 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Appliqué à tout sauf fichiers statiques
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|public).*)"],
+  // Appliqué à tout sauf fichiers statiques (icônes, images, builds)
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|favicon.svg|icon.svg|icon.png|apple-icon.png|robots.txt|sitemap.xml).*)",
+  ],
 };
