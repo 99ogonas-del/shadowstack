@@ -54,6 +54,8 @@ export const users = pgTable("users", {
   githubId: text("github_id").unique(),
   githubUsername: text("github_username"),
   githubAccessToken: text("github_access_token"),
+  // rôle plateforme : "user" (défaut) ou "admin" (accès back-office)
+  role: text("role").notNull().default("user"),
 });
 
 export const sessions = pgTable("sessions", {

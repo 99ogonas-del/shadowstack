@@ -26,6 +26,7 @@ export default async function AppLayout({
           email: user.email,
           plan: user.plan,
           avatarColor: user.avatarColor,
+          role: user.role,
         }}
       />
       <main className="flex-1 min-w-0">

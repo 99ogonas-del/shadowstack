@@ -86,10 +86,25 @@ export async function requireUser(): Promise<User> {
   return user;
 }
 
+/** Exige un utilisateur avec le rôle admin (sinon 403). */
+export async function requireAdmin(): Promise<User> {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+  if (user.role !== "admin") {
+    throw new Error("Forbidden");
+  }
+  return user;
+}
+
+export function isAdminUser(user: User | null): boolean {
+  return user?.role === "admin";
+}
+
 export function generateUserId(): string {
   return generateId();
 }
-
 export function generateProjectId(): string {
   return generateId();
 }

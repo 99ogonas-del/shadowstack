@@ -8,6 +8,7 @@ import {
   ScanLine,
   Sparkles,
   ShieldCheck,
+  ShieldAlert,
   FlaskConical,
   BookOpen,
   Settings,
@@ -23,6 +24,7 @@ export type SidebarUser = {
   email: string;
   plan: string;
   avatarColor: string;
+  role?: string;
 };
 
 const NAV_GROUPS: Array<{
@@ -64,6 +66,13 @@ const NAV_GROUPS: Array<{
       { label: "Paramètres", href: "/settings", icon: Settings },
       { label: "Abonnement", href: "/pricing", icon: CreditCard },
     ],
+  },
+];
+
+const ADMIN_ITEMS = [
+  {
+    label: "Plateforme",
+    items: [{ label: "Administration", href: "/admin", icon: ShieldAlert }],
   },
 ];
 
@@ -125,6 +134,32 @@ export function Sidebar({ user }: { user: SidebarUser }) {
             </div>
           </div>
         ))}
+
+        {/* Section admin — visible uniquement par les admins */}
+        {user.role === "admin" &&
+          ADMIN_ITEMS.map((group) => (
+            <div key={group.label}>
+              <div className="px-3 mb-2 text-[11px] uppercase tracking-wider text-cyan-400/70 font-semibold">
+                {group.label}
+              </div>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn("nav-item", isActive && "active")}
+                    >
+                      <Icon size={18} className="shrink-0" />
+                      <span className="flex-1">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
       </nav>
 
       <div className="p-3 border-t border-[var(--color-border)]">
