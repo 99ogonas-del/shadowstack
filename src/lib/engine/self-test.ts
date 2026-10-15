@@ -84,7 +84,7 @@ const positiveCases: TestCase[] = [
     id: "fetch-in-loop",
     rule: "fetch-in-loop",
     filename: "sync.ts",
-    code: `ids.map(async (id) => { await fetch("/api/user/" + id); });`,
+    code: `ids.forEach(async (id) => { await fetch("/api/user/" + id); });`,
   },
   {
     id: "lodash-full",

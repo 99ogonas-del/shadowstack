@@ -308,11 +308,22 @@ jwt.sign({ userId }, SECRET, { expiresIn: '24h' });`,
 
   {
     id: "password-in-log",
-    pattern: /(console\.(log|info|warn|error)|print|logger\.\w+|log)\s*\([^)]*(password|passwd|secret|token|api[_-]?key|credit[_-]?card)/i,
+    pattern: /(console\.(log|info|warn)|print|logger\.\w+|log)\s*\([^)]*(password|passwd|secret|token|api[_-]?key|credit[_-]?card)/i,
     extensions: ["js", "jsx", "ts", "tsx", "py"],
     onePerFile: true,
-    match: (line, filePath, lineNumber) => ({
-      title: "Donnée sensible transmise dans les logs",
+    match: (line, filePath, lineNumber) => {
+      // Faux positif classique : le mot sensible apparaît dans un MESSAGE
+      // litteral ("password non trouve") et non dans une donnee loggee.
+      // On verifie que le mot sensible est bien une valeur nue (variable,
+      // propriete), pas une chaine entre guillemets.
+      const argsPart = line.slice(line.indexOf("(") + 1);
+      const withoutStrings = argsPart.replace(/["'`][^"'`]*["'`]/g, "");
+      const bareValue = /[,:(\s](password|passwd|secret|token|api[_-]?key|credit[_-]?card)\s*[,)\s]/i.test(
+        withoutStrings,
+      );
+      if (!bareValue) return null;
+      return {
+        title: "Donnée sensible transmise dans les logs",
       description: `Un log contient un champ sensible (mot de passe, token, clé) dans ${filePath}:${lineNumber}.`,
       plainLanguage:
         "Vous écrivez des données sensibles dans vos logs. Ces fichiers sont souvent lisibles par toute votre équipe — et parfois accessibles publiquement. C'est aussi une violation RGPD si ce sont des données clients.",
@@ -331,7 +342,8 @@ console.log('login', req.body); // contient le mot de passe
 const { password, ...safe } = req.body;
 console.log('login', safe);`,
       estimatedCost: 0,
-    }),
+      };
+    },
   },
 
   {
@@ -395,17 +407,22 @@ const tasks = await prisma.task.findMany({
 
   {
     id: "fetch-in-loop",
-    pattern: /(forEach|\.map)\s*\(\s*async\s*\(/,
+    pattern: /forEach\s*\(\s*async\s*\(/,
     extensions: ["js", "jsx", "ts", "tsx"],
     onePerFile: true,
-    match: (line, filePath, lineNumber) => ({
-      title: "Appels API séquentiels dans une boucle (problème N+1)",
-      description: `Un callback async est passé à forEach/map dans ${filePath}:${lineNumber} — pattern typique du N+1.`,
-      plainLanguage:
-        "Votre code fait un appel réseau par élément, les uns après les autres. Avec 14 articles dans le panier, ça fait 14 allers-retours successifs : lent pour l'utilisateur, coûteux pour vous.",
-      severity: "high",
-      category: "Performance",
-      filePath,
+    match: (line, filePath, lineNumber) => {
+      // forEach(async ...) est TOUJOURS un bug : les promesses ne sont
+      // jamais attendues. À l'inverse, map(async ...) est souvent le
+      // pattern CORRECT lorsqu'il est enveloppé dans Promise.all
+      // (parallélisation) — on ne le signale donc plus ici.
+      return {
+        title: "Appels API séquentiels dans une boucle (problème N+1)",
+        description: `Un callback async est passé à forEach dans ${filePath}:${lineNumber} — les appels s'enchaînent en série et leurs promesses ne sont jamais attendues.`,
+        plainLanguage:
+          "Votre code lance un appel réseau par élément, les uns après les autres, sans attendre leur fin. Avec 14 articles dans le panier, ça fait 14 allers-retours successifs : lent pour l'utilisateur, coûteux pour vous.",
+        severity: "high",
+        category: "Performance",
+        filePath,
       lineNumber,
       codeSnippet: snippet(line),
       fixTitle: "Paralléliser avec Promise.all",
@@ -421,7 +438,8 @@ const products = await Promise.all(
   items.map((item) => fetchProduct(item.productId))
 );`,
       estimatedCost: 184,
-    }),
+      };
+    },
   },
 
   {
@@ -545,6 +563,36 @@ const ENV_FILENAMES = new Set([
   ".env.staging", ".env.test",
 ]);
 
+// ---------- fichiers de test / fixtures ----------
+// Exclusion standard de tous les scanners pro (Snyk, Semgrep...) :
+// le code de test contient VOLONTAIREMENT du code vulnérable
+// (fixtures, faux secrets, exemples pédagogiques). Le scanner se
+// scannant lui-même trouverait ses propres tests = 100% faux positifs.
+const IGNORED_FILE_PATTERNS = [
+  /\.(test|spec)\.(ts|tsx|js|jsx|mjs|cjs)$/,      // foo.test.ts
+  /(^|\/)(test|tests|__tests__|__mocks__|fixtures?|e2e)\//, // dossiers de test
+  /(^|\/)(self-test|run-tests|test_webhook)\.ts$/, // scripts de test du moteur
+];
+
+function isTestFile(path: string): boolean {
+  const lower = path.toLowerCase();
+  return IGNORED_FILE_PATTERNS.some((re) => re.test(lower));
+}
+
+// ---------- fichiers internes du moteur ----------
+// Les règles du moteur contiennent des exemples de code vulnérable
+// dans leurs descriptions (jwt.sign sans expiry, eval, CORS *...).
+// Scanner ces fichiers = se scanner soi-même.
+const ENGINE_INTERNAL = [
+  "src/lib/engine/rules.ts",
+  "src/lib/seed-data.ts",
+  "src/lib/seed.ts",
+];
+
+function isEngineInternal(path: string): boolean {
+  return ENGINE_INTERNAL.some((p) => path.includes(p));
+}
+
 export function isScannableFile(path: string): boolean {
   const lower = path.toLowerCase();
 
@@ -552,6 +600,12 @@ export function isScannableFile(path: string): boolean {
   for (const dir of IGNORED_DIRS) {
     if (lower.includes(dir)) return false;
   }
+
+  // ignore les fichiers de test et fixtures (convention standard)
+  if (isTestFile(lower)) return false;
+
+  // ignore les fichiers internes du moteur (exemples pédagogiques)
+  if (isEngineInternal(path)) return false;
 
   const base = lower.split("/").pop() ?? "";
 
