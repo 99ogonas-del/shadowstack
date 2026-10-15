@@ -143,7 +143,7 @@ export function CostOptimizer({
                   Analyse coûts IA
                 </div>
                 <p className="text-xs text-[var(--color-text-muted)]">
-                  Les LLM coûtent cher si mal utilisés. VibeClean détecte les
+                  Les LLM coûtent cher si mal utilisés. ShadowStack détecte les
                   patterns qui font exploser ta facture OpenAI / Anthropic et
                   propose des optimisations concrètes (résumés, batching,
                   caching).

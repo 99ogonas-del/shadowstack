@@ -1,5 +1,5 @@
 /**
- * VibeClean — Analyseur
+ * ShadowStack — Analyseur
  *
  * Prend un ZIP (buffer), extrait les fichiers texte scannables,
  * et retourne les failles RÉELLEMENT détectées par le moteur à règles.
@@ -293,7 +293,7 @@ export async function analyzeGithubRepo(
   for (const branch of ["main", "master"]) {
     const url = `https://github.com/${owner}/${repoClean}/archive/refs/heads/${branch}.tar.gz`;
     const res = await fetch(url, {
-      headers: { "User-Agent": "VibeClean-Scanner" },
+      headers: { "User-Agent": "ShadowStack-Scanner" },
       redirect: "follow",
       signal: AbortSignal.timeout(30_000), // 30s max
     });

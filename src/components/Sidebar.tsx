@@ -15,7 +15,7 @@ import {
   Rocket,
   CreditCard,
 } from "lucide-react";
-import { VibeCleanLogo } from "@/components/VibeCleanLogo";
+import { ShadowStackLogo } from "@/components/ShadowStackLogo";
 import { cn } from "@/lib/utils";
 
 export type SidebarUser = {
@@ -80,14 +80,14 @@ export function Sidebar({ user }: { user: SidebarUser }) {
     <aside className="hidden md:flex flex-col w-[260px] shrink-0 border-r border-[var(--color-border)] bg-[#0c0c22] h-screen sticky top-0">
       <div className="p-5 border-b border-[var(--color-border)]">
         <Link href="/dashboard" className="flex items-center">
-          <VibeCleanLogo size={36} />
+          <ShadowStackLogo size={36} />
           <div className="ml-3">
             <div className="text-lg font-bold leading-tight">
-              <span className="text-white">Vibe</span>
-              <span className="gradient-text-cyan">Clean</span>
+              <span className="text-white">Shadow</span>
+              <span className="gradient-text-cyan">Stack</span>
             </div>
             <div className="text-[11px] text-[var(--color-text-dim)] tracking-wide">
-              Analyse · Nettoie · Sécurise
+              Analyse · Sécurise · Corrige
             </div>
           </div>
         </Link>

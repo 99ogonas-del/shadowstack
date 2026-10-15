@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Mail, Loader2, CheckCircle2 } from "lucide-react";
-import { VibeCleanLogo } from "@/components/VibeCleanLogo";
+import { ShadowStackLogo } from "@/components/ShadowStackLogo";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -43,14 +43,14 @@ export default function ForgotPasswordPage() {
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
 
         <Link href="/" className="relative inline-flex items-center">
-          <VibeCleanLogo size={44} />
+          <ShadowStackLogo size={44} />
           <div className="ml-3">
             <div className="text-2xl font-bold leading-tight">
-              <span className="text-white">Vibe</span>
-              <span className="gradient-text-cyan">Clean</span>
+              <span className="text-white">Shadow</span>
+              <span className="gradient-text-cyan">Stack</span>
             </div>
             <div className="text-xs text-[var(--color-text-dim)]">
-              Analyse · Nettoie · Sécurise
+              Analyse · Sécurise · Corrige
             </div>
           </div>
         </Link>
@@ -136,7 +136,7 @@ export default function ForgotPasswordPage() {
                     <input
                       type="email"
                       className="input !pl-10"
-                      placeholder="toi@vibeclean.app"
+                      placeholder="toi@shadowstack.app"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required

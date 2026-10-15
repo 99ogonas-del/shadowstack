@@ -1,5 +1,5 @@
 /**
- * VibeClean — Analyse des dépendances
+ * ShadowStack — Analyse des dépendances
  *
  * Compare les versions déclarées dans package.json / requirements.txt
  * avec les dernières versions publiées et une base de CVE connues.

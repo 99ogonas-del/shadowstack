@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Search, Plus } from "lucide-react";
-import { VibeCleanLogo } from "@/components/VibeCleanLogo";
+import { ShadowStackLogo } from "@/components/ShadowStackLogo";
 import { getInitials } from "@/lib/utils";
 
 export function MobileNav({
@@ -15,10 +15,10 @@ export function MobileNav({
   return (
     <div className="md:hidden sticky top-0 z-30 bg-[#0c0c22]/95 backdrop-blur border-b border-[var(--color-border)] flex items-center justify-between px-4 py-3">
       <Link href="/dashboard" className="flex items-center">
-        <VibeCleanLogo size={28} />
+        <ShadowStackLogo size={28} />
         <span className="ml-2 font-bold text-base">
-          <span className="text-white">Vibe</span>
-          <span className="gradient-text-cyan">Clean</span>
+          <span className="text-white">Shadow</span>
+          <span className="gradient-text-cyan">Stack</span>
         </span>
       </Link>
       <div className="flex items-center gap-2">

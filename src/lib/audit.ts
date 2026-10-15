@@ -1,5 +1,5 @@
 /**
- * VibeClean — Journal d'audit
+ * ShadowStack — Journal d'audit
  *
  * Trace les événements de sécurité : connexions, échecs, changements de
  * mot de passe, activation 2FA, suppressions... Chaque entrée garde

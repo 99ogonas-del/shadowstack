@@ -1,5 +1,5 @@
 /**
- * VibeClean — Envoi d'emails transactionnels via Resend
+ * ShadowStack — Envoi d'emails transactionnels via Resend
  *
  * Configuration requise (dans .env.local) :
  *   RESEND_API_KEY=re_xxxxxxxxx        → clé API Resend (https://resend.com)
@@ -33,7 +33,7 @@ function getAppUrl(): string {
 }
 
 function getFromAddress(): string {
-  return process.env.EMAIL_FROM ?? "VibeClean <onboarding@resend.dev>";
+  return process.env.EMAIL_FROM ?? "ShadowStack <onboarding@resend.dev>";
 }
 
 // ---------- email de réinitialisation de mot de passe ----------
@@ -46,14 +46,14 @@ function resetPasswordHtml(resetUrl: string, name?: string): string {
 <body style="margin:0;padding:0;background:#0a0a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
-      <span style="font-size:26px;font-weight:800;color:#fff;">Vibe<span style="color:#22d3ee;">Clean</span></span>
-      <div style="font-size:12px;color:#8b93a7;margin-top:4px;">Analyse · Nettoie · Sécurise</div>
+      <span style="font-size:26px;font-weight:800;color:#fff;">Shadow<span style="color:#22d3ee;">Stack</span></span>
+      <div style="font-size:12px;color:#8b93a7;margin-top:4px;">Analyse · Sécurise · Corrige</div>
     </div>
     <div style="background:#12122b;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px;">
       <h1 style="color:#fff;font-size:20px;margin:0 0 16px 0;">Réinitialise ton mot de passe</h1>
       <p style="color:#aab0c0;font-size:14px;line-height:1.6;margin:0 0 16px 0;">
         ${greeting}<br><br>
-        Tu as demandé à réinitialiser ton mot de passe VibeClean.
+        Tu as demandé à réinitialiser ton mot de passe ShadowStack.
         Clique sur le bouton ci-dessous pour en définir un nouveau.
       </p>
       <div style="text-align:center;margin:28px 0;">
@@ -73,7 +73,7 @@ function resetPasswordHtml(resetUrl: string, name?: string): string {
       </div>
     </div>
     <p style="color:#5c6377;font-size:11px;text-align:center;margin-top:24px;">
-      © ${new Date().getFullYear()} VibeClean — Analyse, nettoie et sécurise tes projets IA.
+      © ${new Date().getFullYear()} ShadowStack — Analyse, nettoie et sécurise tes projets IA.
     </p>
   </div>
 </body>
@@ -96,7 +96,7 @@ export async function sendPasswordResetEmail(
     const { error } = await client.emails.send({
       from: getFromAddress(),
       to,
-      subject: "Réinitialise ton mot de passe VibeClean",
+      subject: "Réinitialise ton mot de passe ShadowStack",
       html: resetPasswordHtml(resetUrl, name),
     });
 
@@ -125,14 +125,14 @@ function verificationHtml(verifyUrl: string, name?: string): string {
 <body style="margin:0;padding:0;background:#0a0a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
-      <span style="font-size:26px;font-weight:800;color:#fff;">Vibe<span style="color:#22d3ee;">Clean</span></span>
-      <div style="font-size:12px;color:#8b93a7;margin-top:4px;">Analyse · Nettoie · Sécurise</div>
+      <span style="font-size:26px;font-weight:800;color:#fff;">Shadow<span style="color:#22d3ee;">Stack</span></span>
+      <div style="font-size:12px;color:#8b93a7;margin-top:4px;">Analyse · Sécurise · Corrige</div>
     </div>
     <div style="background:#12122b;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px;">
       <h1 style="color:#fff;font-size:20px;margin:0 0 16px 0;">Confirme ton adresse email</h1>
       <p style="color:#aab0c0;font-size:14px;line-height:1.6;margin:0 0 16px 0;">
         ${greeting}<br><br>
-        Bienvenue sur VibeClean ! Confirme ton adresse pour activer
+        Bienvenue sur ShadowStack ! Confirme ton adresse pour activer
         toutes les fonctionnalités de ton compte.
       </p>
       <div style="text-align:center;margin:28px 0;">
@@ -143,7 +143,7 @@ function verificationHtml(verifyUrl: string, name?: string): string {
       </div>
       <p style="color:#8b93a7;font-size:12px;line-height:1.6;margin:0;">
         Ce lien expire dans <strong style="color:#aab0c0;">24 heures</strong>.<br><br>
-        Si tu n'as pas créé de compte VibeClean, ignore cet email.
+        Si tu n'as pas créé de compte ShadowStack, ignore cet email.
       </p>
       <div style="border-top:1px solid rgba(255,255,255,0.06);margin-top:24px;padding-top:16px;">
         <p style="color:#5c6377;font-size:11px;margin:0;word-break:break-all;">
@@ -152,7 +152,7 @@ function verificationHtml(verifyUrl: string, name?: string): string {
       </div>
     </div>
     <p style="color:#5c6377;font-size:11px;text-align:center;margin-top:24px;">
-      © ${new Date().getFullYear()} VibeClean — Analyse, nettoie et sécurise tes projets IA.
+      © ${new Date().getFullYear()} ShadowStack — Analyse, nettoie et sécurise tes projets IA.
     </p>
   </div>
 </body>
@@ -176,7 +176,7 @@ export async function sendVerificationEmail(
     const { error } = await client.emails.send({
       from: getFromAddress(),
       to,
-      subject: "Confirme ton adresse email VibeClean",
+      subject: "Confirme ton adresse email ShadowStack",
       html: verificationHtml(verifyUrl, name),
     });
 

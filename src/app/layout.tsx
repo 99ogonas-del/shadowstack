@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "VibeClean — Analyse, Nettoie & Sécurise tes projets IA",
+  title: "ShadowStack — Analyse, sécurise & corrige tes projets IA",
   description:
     "Le SaaS tout-en-un pour analyser, nettoyer et sécuriser les projets créés avec l'IA. Détecte les secrets exposés, dépendances obsolètes et optimise les coûts.",
 };

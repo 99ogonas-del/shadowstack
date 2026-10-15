@@ -14,7 +14,7 @@ const docs = [
   {
     icon: Shield,
     title: "Comprendre les scores",
-    desc: "Comment VibeClean calcule le score de santé de tes projets.",
+    desc: "Comment ShadowStack calcule le score de santé de tes projets.",
     badge: "Concept",
   },
   {
@@ -26,7 +26,7 @@ const docs = [
   {
     icon: Sparkles,
     title: "API publique",
-    desc: "Intègre VibeClean dans ton CI/CD avec notre API REST.",
+    desc: "Intègre ShadowStack dans ton CI/CD avec notre API REST.",
     badge: "API",
   },
   {
@@ -42,7 +42,7 @@ export default function DocsPage() {
     <>
       <PageHeader
         title="Documentation"
-        subtitle="Tout ce qu'il faut pour tirer le meilleur de VibeClean."
+        subtitle="Tout ce qu'il faut pour tirer le meilleur de ShadowStack."
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

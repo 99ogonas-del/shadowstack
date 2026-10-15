@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { Check, Sparkles, Zap, Rocket, X } from "lucide-react";
-import { VibeCleanLogo } from "@/components/VibeCleanLogo";
+import { ShadowStackLogo } from "@/components/ShadowStackLogo";
 
 export const dynamic = "force-dynamic";
 
@@ -82,11 +82,11 @@ export default async function PricingPage() {
       <header className="border-b border-[var(--color-border)] sticky top-0 bg-[var(--color-bg)]/90 backdrop-blur z-10">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="inline-flex items-center">
-            <VibeCleanLogo size={34} />
+            <ShadowStackLogo size={34} />
             <div className="ml-2.5">
               <div className="text-lg font-bold leading-tight">
-                <span className="text-white">Vibe</span>
-                <span className="gradient-text-cyan">Clean</span>
+                <span className="text-white">Shadow</span>
+                <span className="gradient-text-cyan">Stack</span>
               </div>
             </div>
           </Link>
@@ -259,7 +259,7 @@ export default async function PricingPage() {
                 a: "3 scans au total, tout simplement. Après, tu passes au Pro — c'est appliqué côté serveur, pas juste affiché.",
               },
               {
-                q: "Est-ce que VibeClean modifie mon code ?",
+                q: "Est-ce que ShadowStack modifie mon code ?",
                 a: "Non. On analyse et on propose des corrections détaillées — c'est toi qui les appliques dans ton éditeur. On ne touche jamais à tes fichiers.",
               },
               {
@@ -304,7 +304,7 @@ export default async function PricingPage() {
       <footer className="border-t border-[var(--color-border)] py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-[var(--color-text-dim)]">
-            © {new Date().getFullYear()} VibeClean — Analyse, nettoie et
+            © {new Date().getFullYear()} ShadowStack — Analyse, nettoie et
             sécurise tes projets IA.
           </div>
           <div className="flex items-center gap-4 text-xs text-[var(--color-text-dim)]">

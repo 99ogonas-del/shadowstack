@@ -1,5 +1,5 @@
 /**
- * VibeClean — Moteur d'analyse par règles
+ * ShadowStack — Moteur d'analyse par règles
  *
  * Chaque règle = un pattern regex qui cherche une faille RÉELLE dans le
  * contenu réel des fichiers. Pas de findings inventés : si aucune règle ne

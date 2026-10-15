@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowLeft, Lock, Loader2, CheckCircle2, KeyRound } from "lucide-react";
-import { VibeCleanLogo } from "@/components/VibeCleanLogo";
+import { ShadowStackLogo } from "@/components/ShadowStackLogo";
 
 function ResetForm() {
   const params = useSearchParams();
@@ -60,14 +60,14 @@ function ResetForm() {
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
 
         <Link href="/" className="relative inline-flex items-center">
-          <VibeCleanLogo size={44} />
+          <ShadowStackLogo size={44} />
           <div className="ml-3">
             <div className="text-2xl font-bold leading-tight">
-              <span className="text-white">Vibe</span>
-              <span className="gradient-text-cyan">Clean</span>
+              <span className="text-white">Shadow</span>
+              <span className="gradient-text-cyan">Stack</span>
             </div>
             <div className="text-xs text-[var(--color-text-dim)]">
-              Analyse · Nettoie · Sécurise
+              Analyse · Sécurise · Corrige
             </div>
           </div>
         </Link>

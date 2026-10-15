@@ -13,7 +13,7 @@ import {
   Zap,
   CheckCircle2,
 } from "lucide-react";
-import { VibeCleanLogo } from "@/components/VibeCleanLogo";
+import { ShadowStackLogo } from "@/components/ShadowStackLogo";
 
 export function AuthCard({ mode: initialMode }: { mode: "login" | "signup" }) {
   const router = useRouter();
@@ -68,14 +68,14 @@ export function AuthCard({ mode: initialMode }: { mode: "login" | "signup" }) {
 
         <div className="relative">
           <Link href="/" className="inline-flex items-center">
-            <VibeCleanLogo size={44} />
+            <ShadowStackLogo size={44} />
             <div className="ml-3">
               <div className="text-2xl font-bold leading-tight">
-                <span className="text-white">Vibe</span>
-                <span className="gradient-text-cyan">Clean</span>
+                <span className="text-white">Shadow</span>
+                <span className="gradient-text-cyan">Stack</span>
               </div>
               <div className="text-xs text-[var(--color-text-dim)]">
-                Analyse · Nettoie · Sécurise
+                Analyse · Sécurise · Corrige
               </div>
             </div>
           </Link>
@@ -96,7 +96,7 @@ export function AuthCard({ mode: initialMode }: { mode: "login" | "signup" }) {
             et <span className="gradient-text">maintenables</span>.
           </h1>
           <p className="mt-5 text-[var(--color-text-muted)] leading-relaxed max-w-md">
-            VibeClean analyse, nettoie et sécurise vos projets générés par l'IA.
+            ShadowStack analyse, nettoie et sécurise vos projets générés par l'IA.
             Gagnez du temps, évitez les erreurs et concentrez-vous sur l'essentiel
             : créer.
           </p>
@@ -206,7 +206,7 @@ export function AuthCard({ mode: initialMode }: { mode: "login" | "signup" }) {
                   <input
                     type="email"
                     className="input pl-10"
-                    placeholder="toi@vibeclean.app"
+                    placeholder="toi@shadowstack.app"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required

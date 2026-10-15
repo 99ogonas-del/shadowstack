@@ -15,7 +15,7 @@ export default async function NewScanPage({
     <>
       <PageHeader
         title="Lancer une analyse"
-        subtitle="Connecte un dépôt GitHub, importe un fichier ZIP ou colle du code. VibeClean le scanne en moins d'une minute."
+        subtitle="Connecte un dépôt GitHub, importe un fichier ZIP ou colle du code. ShadowStack le scanne en moins d'une minute."
         breadcrumb={[{ label: "Projets", href: "/projects" }, { label: "Nouvelle analyse" }]}
       />
 

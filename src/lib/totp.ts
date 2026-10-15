@@ -1,5 +1,5 @@
 /**
- * VibeClean — Double authentification (TOTP)
+ * ShadowStack — Double authentification (TOTP)
  *
  * Enveloppe otplib v13 avec une API stable utilisable partout dans l'app.
  * TOTP = code à 6 chiffres qui change toutes les 30 secondes
@@ -15,7 +15,7 @@ import { generateSecret, generateURI, verifySync, generateSync } from "otplib";
 export function createTotp(params: { email: string; issuer?: string }) {
   const secret = generateSecret();
   const otpauthUrl = generateURI({
-    issuer: params.issuer ?? "VibeClean",
+    issuer: params.issuer ?? "ShadowStack",
     label: params.email,
     secret,
   });
