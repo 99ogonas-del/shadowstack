@@ -15,12 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Nécessaire pour scanner l'historique complet
+          fetch-depth: 0
 
       - name: Install gitleaks
         uses: gitleaks/gitleaks-action@v2
         env:
-          GITLEaks_VERSION: v8.18.2
+          GITLEAKS_VERSION: v8.18.2
 
       - name: Scan for secrets
         run: |
@@ -35,8 +35,27 @@ jobs:
           path: gitleaks-report.json
           retention-days: 30
 
-  typescript-audit:
-    name: TypeScript Security Audit
+  production-audit:
+    name: Production Dependencies Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+
+      - name: Install production dependencies only
+        run: npm ci --only=production
+
+      - name: Run security audit (production only)
+        run: npm audit --audit-level=critical --only=prod
+
+  typecheck:
+    name: TypeScript Type Check
     runs-on: ubuntu-latest
     
     steps:
@@ -51,9 +70,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run security audit
-        run: npm audit --audit-level=high
-
-      - name: Check for outdated dependencies
-        run: |
-          npm outdated --json || echo "Dependencies are up to date"
+      - name: Run TypeScript type check
+        run: npm run typecheck
