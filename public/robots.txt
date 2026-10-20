@@ -1,0 +1,19 @@
+# ShadowStack - robots.txt
+# Interdit l'indexation des pages sensibles
+
+User-agent: *
+Disallow: /api/
+Disallow: /login
+Disallow: /signup
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /_next/
+Disallow: /public/
+
+# Autoriser l'accès aux pages publiques
+Allow: /
+Allow: /about
+Allow: /pricing
+
+# Sitemamp
+Sitemap: https://shadowstack-ogo4.vercel.app/sitemap.xml

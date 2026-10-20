@@ -37,8 +37,8 @@ const securityHeaders = [
           key: "Content-Security-Policy",
           value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'",
-            "style-src 'self' 'unsafe-inline'",
+            "script-src 'self' 'nonce-$script-nonce'",
+            "style-src 'self' 'nonce-$style-nonce'",
             "img-src 'self' data: blob:",
             "font-src 'self' data:",
             "connect-src 'self'",
@@ -53,6 +53,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  
+  // Supprimer console.* et debugger en production pour éviter les fuites de logs
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+    // const enums: false, // Décommenter si vous utilisez des const enums
+  },
+  
   async headers() {
     return [
       {
