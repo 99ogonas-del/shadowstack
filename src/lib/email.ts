@@ -166,7 +166,6 @@ export async function sendVerificationEmail(
 ): Promise<EmailResult> {
   const client = getClient();
   if (!client) {
-    console.log("[email] pas de clé — email de vérification non envoyé");
     return { sent: false, error: "RESEND_API_KEY non configurée" };
   }
 

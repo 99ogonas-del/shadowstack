@@ -111,9 +111,6 @@ export async function POST(req: NextRequest) {
     }
 
     // Mode dev sans clé email : lien retourné explicitement
-    console.log(
-      `[reset] email non envoyé (${emailResult.error}) — lien dev pour ${email}`,
-    );
     return NextResponse.json({
       ok: true,
       message:

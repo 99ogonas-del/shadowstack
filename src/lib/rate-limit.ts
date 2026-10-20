@@ -51,9 +51,6 @@ function getRedis(): UpstashRedis | null {
 
   try {
     redisClient = new UpstashRedis({ url, token });
-    if (process.env.NODE_ENV !== "production") {
-      console.log("[rate-limit] Upstash Redis (REST) actif");
-    }
   } catch {
     redisClient = null;
   }
