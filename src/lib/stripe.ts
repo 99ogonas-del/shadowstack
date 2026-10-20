@@ -8,13 +8,19 @@
 
 import Stripe from "stripe";
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error(
-    "STRIPE_SECRET_KEY manquante — nécessaire pour le paiement.",
-  );
+// Lazy initialization - Stripe client is created on-demand
+// This allows the build to succeed even without STRIPE_SECRET_KEY
+const secretKey = process.env.STRIPE_SECRET_KEY;
+
+export function getStripeClient(): Stripe | null {
+  if (!secretKey) {
+    return null;
+  }
+  return new Stripe(secretKey);
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// Export a nullable stripe instance for backward compatibility
+export const stripe: Stripe | null = getStripeClient();
 
 /** Les plans payants, mappés sur les Price IDs Stripe. */
 export const STRIPE_PLANS = {

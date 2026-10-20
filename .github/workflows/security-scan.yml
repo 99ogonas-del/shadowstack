@@ -61,6 +61,10 @@ jobs:
     needs: [typecheck]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      STRIPE_PRICE_PRO: ${{ secrets.STRIPE_PRICE_PRO }}
+      STRIPE_PRICE_TEAM: ${{ secrets.STRIPE_PRICE_TEAM }}
     
     steps:
       - name: Checkout code
@@ -72,10 +76,16 @@ jobs:
           node-version: '24.x'
           cache: 'npm'
 
-      - name: Set up database (fallback for build)
+      - name: Set up environment (fallback for build)
         run: |
           if [ -z "$DATABASE_URL" ]; then
             echo "DATABASE_URL=postgresql://postgres@localhost:5432/postgres?sslmode=require" >> $GITHUB_ENV
+          fi
+          if [ -z "$STRIPE_SECRET_KEY" ]; then
+            echo "STRIPE_SECRET_KEY=sk_test_dummy_for_build" >> $GITHUB_ENV
+          fi
+          if [ -z "$STRIPE_WEBHOOK_SECRET" ]; then
+            echo "STRIPE_WEBHOOK_SECRET=whsec_dummy_for_build" >> $GITHUB_ENV
           fi
 
       - name: Install dependencies

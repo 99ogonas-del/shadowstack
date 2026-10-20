@@ -25,6 +25,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
+  // Check Stripe is configured
+  if (!stripe) {
+    console.error("[stripe] STRIPE_SECRET_KEY manquante");
+    return NextResponse.json(
+      { error: "Stripe non configuré" },
+      { status: 503 },
+    );
+  }
+
+  // Check DB is configured
+  if (!db) {
+    console.error("[db] DATABASE_URL manquante");
+    return NextResponse.json(
+      { error: "Base de données non configurée" },
+      { status: 503 },
+    );
+  }
+
   const ip = getClientIp(req);
   const limit = await scanRateLimit(`checkout:${user.id}`);
   if (!limit.allowed) {
