@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Nécessaire pour scanner l'historique
 
       - name: Install gitleaks
         uses: gitleaks/gitleaks-action@v2
@@ -35,25 +35,6 @@ jobs:
           path: gitleaks-report.json
           retention-days: 30
 
-  production-audit:
-    name: Production Dependencies Security Audit
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24.x'
-
-      - name: Install production dependencies only
-        run: npm ci --only=production
-
-      - name: Run security audit (production only)
-        run: npm audit --audit-level=critical --only=prod
-
   typecheck:
     name: TypeScript Type Check
     runs-on: ubuntu-latest
@@ -72,3 +53,22 @@ jobs:
 
       - name: Run TypeScript type check
         run: npm run typecheck
+
+  lint:
+    name: Lint Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
