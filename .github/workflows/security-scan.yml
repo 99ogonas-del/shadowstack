@@ -61,7 +61,6 @@ jobs:
     needs: [typecheck]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      NODE_ENV: production
     
     steps:
       - name: Checkout code
