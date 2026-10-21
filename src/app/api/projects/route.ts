@@ -37,6 +37,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
+  // Check database is available
+  if (!db) {
+    console.error("[db] DATABASE_URL non configurée");
+    return NextResponse.json(
+      { error: "Service temporairement indisponible. Vérifiez les logs administrateur." },
+      { status: 503 },
+    );
+  }
+
   // ---- Contrôle : email vérifié obligatoire pour scanner ----
   // Empêche la création de comptes jetables pour spammer le moteur
   if (!user.emailVerified) {
@@ -275,6 +284,15 @@ export async function GET(req: NextRequest) {
   const user = await requireUser().catch(() => null);
   if (!user) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  }
+
+  // Check database is available
+  if (!db) {
+    console.error("[db] DATABASE_URL non configurée");
+    return NextResponse.json(
+      { error: "Service temporairement indisponible." },
+      { status: 503 },
+    );
   }
 
   const rows = await db
