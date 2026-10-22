@@ -30,7 +30,11 @@ const publicPaths = [
 
 function isPublic(pathname: string): boolean {
   if (pathname === "/") return true;
-  return publicPaths.some((p) => pathname.startsWith(p));
+  // Match par segment complet (pas startsWith pur) : "/login" et "/login/x"
+  // sont publics, mais "/loginx" ne l'est PAS — sinon une future route
+  // sensible dont le nom commencerait par un path public serait faussement
+  // autorisée.
+  return publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"));
 }
 
 export function middleware(req: NextRequest) {

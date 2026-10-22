@@ -72,16 +72,21 @@ export async function POST(req: NextRequest) {
     }
 
     const existing = await db
-      .select()
+      .select({ id: users.id })
       .from(users)
       .where(eq(users.email, normalizedEmail))
       .limit(1);
 
+    // Anti-enumeration : on ne révèle JAMAIS si un email est déjà enregistré.
+    // Si le compte existe, on renvoie la MÊME réponse générique qu'un signup
+    // réussi, mais SANS créer de compte ni de session. L'attaquant ne peut donc
+    // pas distinguer "email libre" de "email déjà pris" (contrairement au old 409).
     if (existing.length > 0) {
-      return NextResponse.json(
-        { error: "Un compte existe déjà avec cet email" },
-        { status: 409 },
-      );
+      return NextResponse.json({
+        ok: true,
+        message:
+          "Si un compte existe déjà avec cet email, un message de confirmation t'a été envoyé.",
+      });
     }
 
     const id = generateUserId();

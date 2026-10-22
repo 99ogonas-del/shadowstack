@@ -27,11 +27,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email requis" }, { status: 400 });
     }
 
-    // rate limiting (par IP) — anti-abus
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      req.headers.get("x-real-ip") ??
-      "unknown";
+    // rate limiting (par IP) — anti-abus. getClientIp priorise x-real-ip
+    // (fiable) sur x-forwarded-for (spoofable).
+    const ip = getClientIp(req) ?? "unknown";
     const limit = await authRateLimit(`forgot:${ip}`);
     if (!limit.allowed) {
       const minutes = Math.ceil((limit.retryAfterMs ?? 0) / 60000);

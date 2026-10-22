@@ -58,9 +58,13 @@ export async function logAudit(params: {
 }
 
 export function getClientIp(req: Request): string | null {
+  // x-real-ip D'ABORD : c'est le proxy (Vercel/nginx) qui le fixe → fiable,
+  // non spoofable par le client. x-forwarded-for est en second car le client
+  // peut le forger — s'il servait en 1re source, on contournerait le rate-limit
+  // par IP et on polluerait les logs d'audit avec des IPs inventées.
   return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     null
   );
 }
