@@ -281,7 +281,7 @@ execFileSync('convert', [userFile, 'out.png'])`,
   // ----- AUTH / SESSIONS -----
   {
     id: "jwt-no-expiry",
-    pattern: /(jwt\.sign|sign)\s*\([^)]*\)(?![\s\S]{0,120}expiresIn)/,
+    pattern: /\bjwt\.sign\s*\((?![^)]*\bexpiresIn\b)[^)]*\)/,
     extensions: ["js", "jsx", "ts", "tsx"],
     onePerFile: true,
     match: (line, filePath, lineNumber) => ({
@@ -376,7 +376,7 @@ cors({ origin: ['https://monapp.com', 'https://www.monapp.com'] })`,
   // ----- PERFORMANCE / COÛTS -----
   {
     id: "prisma-findmany-nolimit",
-    pattern: /(findMany|\.find\(\))\s*\(\s*\)(?![\s\S]{0,80}\btake\b)/,
+    pattern: /findMany\s*\(\s*\)(?![\s\S]{0,80}\btake\b)/,
     extensions: ["js", "jsx", "ts", "tsx"],
     onePerFile: true,
     match: (line, filePath, lineNumber) => ({
@@ -401,6 +401,37 @@ const tasks = await prisma.task.findMany({
   skip: cursor,
   orderBy: { createdAt: 'desc' },
 });`,
+      estimatedCost: 240,
+    }),
+  },
+
+  {
+    id: "drizzle-select-no-limit",
+    pattern: /\.select\s*\([\s\S]*?\.from\s*\((?![\s\S]{0,120}\.limit\b)/,
+    extensions: ["ts", "tsx"],
+    onePerFile: true,
+    match: (line, filePath, lineNumber) => ({
+      title: "Requête Drizzle sans pagination (select().from() sans limit)",
+      description: `Une requête Drizzle select().from() sans .limit() est appelée dans ${filePath}:${lineNumber}. Elle charge toutes les lignes de la table.`,
+      plainLanguage:
+        "Votre page charge TOUT le contenu de la base d'un coup. Plus vous avez d'utilisateurs et de données, plus c'est lent — et ça finit par saturer votre serveur et faire grimper vos coûts.",
+      severity: "medium",
+      category: "Performance",
+      filePath,
+      lineNumber,
+      codeSnippet: snippet(line),
+      fixTitle: "Ajouter une pagination (.limit() + curseur)",
+      fixExplanation:
+        "Chargez un nombre limité d'éléments par page. La pagination par curseur (.limit() + offset) reste rapide même sur des millions de lignes.",
+      fixedCode: `// AVANT
+const users = await db.select().from(usersTable);
+
+// APRÈS
+const users = await db
+  .select()
+  .from(usersTable)
+  .limit(20)
+  .offset(cursor);`,
       estimatedCost: 240,
     }),
   },

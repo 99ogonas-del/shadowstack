@@ -85,9 +85,9 @@ export async function analyzeNpmDeps(
 
   const findings: Finding[] = [];
   let lineNo = 1;
-  for (const line of content.split("\n")) {
-    if (/^\s*"[\w@./-]+"\s*:/.test(line)) lineNo = content.split("\n").indexOf(line) + 1;
-    break;
+  const lines = content.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*"[\w@./-]+"\s*:/.test(lines[i])) { lineNo = i + 1; break; }
   }
 
   // on limite le nombre de requêtes registry pour ne pas spammer

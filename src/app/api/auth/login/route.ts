@@ -76,6 +76,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Modèle "explore puis vérifie" : la connexion est autorisée même si l'email
+    // n'est pas encore vérifié (le signup auto-connecte aussi un compte non
+    // vérifié). La vérification reste OBLIGATOIRE pour les actions sensibles
+    // (lancer un scan) — voir api/projects/route.ts. Ne pas rebloquer ici.
+
     const ok = await verifyPassword(password, user.passwordHash);
     if (!ok) {
       await logAudit({

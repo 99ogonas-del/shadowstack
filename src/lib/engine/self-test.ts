@@ -81,6 +81,12 @@ const positiveCases: TestCase[] = [
     code: `const users = await prisma.user.findMany();`,
   },
   {
+    id: "drizzle-nolimit",
+    rule: "drizzle-select-no-limit",
+    filename: "query.ts",
+    code: `const users = await db.select().from(usersTable);`,
+  },
+  {
     id: "fetch-in-loop",
     rule: "fetch-in-loop",
     filename: "sync.ts",
@@ -125,6 +131,24 @@ const negativeCases: TestCase[] = [
     rule: "(aucune)",
     filename: "safe-config.ts",
     code: `const key = process.env.MA_CLE_SECRETE;`,
+  },
+  {
+    id: "jwt-with-expiry",
+    rule: "(aucune)",
+    filename: "safe-auth.ts",
+    code: `const token = jwt.sign(payload, secret, { expiresIn: "24h" });`,
+  },
+  {
+    id: "jwt-keyword-fp",
+    rule: "(aucune)",
+    filename: "roles.ts",
+    code: `assignRole(user, "admin"); const s = signature(x);`,
+  },
+  {
+    id: "drizzle-with-limit",
+    rule: "(aucune)",
+    filename: "safe-query.ts",
+    code: `const users = await db.select().from(usersTable).limit(20);`,
   },
 ];
 

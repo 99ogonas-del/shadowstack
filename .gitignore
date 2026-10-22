@@ -39,9 +39,22 @@ prisma/dev.db*
 # Vercel
 .vercel
 
+# --- Contenu multimédia / scripts perso (jamais dans le repo) ---
+/video_frames/
+*.mp4
+*.m4a
+*.wav
+*.py
+*.png
+reference-sheet.html
+
 # fichiers temporaires de test
 test_*.ts
 scan_*.ts
 seed_run.ts
 /tmp/
 .env*
+
+# tsconfig build info (artifact)
+tsconfig.tsbuildinfo
+*.mp3
