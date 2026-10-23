@@ -10,7 +10,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 async function main() {
-  const email = "admin@shadowstack.app";
+  const email = "alhass.sanogo@gmail.com";
   const existing = await db
     .select({ id: users.id, role: users.role })
     .from(users)
@@ -18,13 +18,13 @@ async function main() {
     .limit(1);
 
   if (existing.length > 0) {
-    console.log(`Admin DÉJÀ présent (${existing[0].id}, role=${existing[0].role})`);
+    console.log(`Compte DÉJÀ présent (${existing[0].id}, role=${existing[0].role})`);
     await pool.end();
     return;
   }
 
   const id = crypto.randomBytes(16).toString("hex");
-  const passwordHash = bcrypt.hashSync("Admin#2026", 12);
+  const passwordHash = bcrypt.hashSync("REMPLACE_PAR_TON_MOT_DE_PASSE", 12);
   await db
     .insert(users)
     .values({

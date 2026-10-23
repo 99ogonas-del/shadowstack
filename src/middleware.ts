@@ -41,15 +41,31 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const hasSession = req.cookies.has(SESSION_COOKIE);
 
-  // Les pages publiques sont toujours accessibles. ⚠️ On NE redirige
-  // PAS /login → /dashboard sur la simple présence du cookie : un
-  // cookie peut être périmé (session supprimée en base), et la page
-  // /login elle-même décide déjà de rediriger si la session est
-  // VRAIMENT valide. Sinon → boucle de redirection infinie.
+  // Générer un nonce pour le CSP (anti-XSS) — compatible Edge Runtime
+  const nonceBytes = new Uint8Array(16);
+  crypto.getRandomValues(nonceBytes);
+  const nonce = btoa(String.fromCharCode(...nonceBytes));
+
+  // Construire le CSP avec nonce (pas de unsafe-inline)
+  const csp = [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `style-src 'self' 'nonce-${nonce}'`,
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self'",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join("; ");
 
   // Routes API : laissées passer (leur auth est faite dans chaque route).
   if (pathname.startsWith("/api/")) {
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set("Content-Security-Policy", csp);
+    res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+    res.headers.set("Cross-Origin-Resource-Policy", "same-origin");
+    return res;
   }
 
   // Toute page protégée (dashboard, scan, settings...) exige un cookie.
@@ -57,10 +73,18 @@ export function middleware(req: NextRequest) {
     const loginUrl = new URL("/login", req.url);
     // mémorise où l'utilisateur voulait aller (confort retour)
     loginUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(loginUrl);
+    const res = NextResponse.redirect(loginUrl);
+    res.headers.set("Content-Security-Policy", csp);
+    res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+    res.headers.set("Cross-Origin-Resource-Policy", "same-origin");
+    return res;
   }
 
-  return NextResponse.next();
+  const res = NextResponse.next();
+  res.headers.set("Content-Security-Policy", csp);
+  res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  res.headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  return res;
 }
 
 export const config = {

@@ -22,33 +22,18 @@ const securityHeaders = [
     value: "strict-origin-when-cross-origin",
   },
   {
-    key: "X-XSS-Protection",
-    value: "1; mode=block",
-  },
-  {
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=()",
   },
-  // Content-Security-Policy : limite les sources de contenu autorisées.
-  // En dev, 'unsafe-eval' et websocket sont nécessaires (HMR Turbopack).
-  ...(process.env.NODE_ENV === "production"
-    ? [
-        {
-          key: "Content-Security-Policy",
-          value: [
-            "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'",
-            "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: blob:",
-            "font-src 'self' data:",
-            "connect-src 'self'",
-            "frame-ancestors 'none'",
-            "base-uri 'self'",
-            "form-action 'self'",
-          ].join("; "),
-        },
-      ]
-    : []),
+  {
+    key: "Cross-Origin-Opener-Policy",
+    value: "same-origin",
+  },
+  {
+    key: "Cross-Origin-Resource-Policy",
+    value: "same-origin",
+  },
+  // CSP géré dynamiquement dans le middleware avec un nonce
 ];
 
 const nextConfig: NextConfig = {
