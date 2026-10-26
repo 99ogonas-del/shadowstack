@@ -18,7 +18,6 @@ async function main() {
     .limit(1);
 
   if (existing.length > 0) {
-    console.log(`Compte DÉJÀ présent (${existing[0].id}, role=${existing[0].role})`);
     await pool.end();
     return;
   }
@@ -38,7 +37,6 @@ async function main() {
     })
     .execute();
 
-  console.log(`Admin CRÉÉ : ${id}`);
   await pool.end();
 }
 

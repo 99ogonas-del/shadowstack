@@ -150,6 +150,12 @@ const negativeCases: TestCase[] = [
     filename: "safe-query.ts",
     code: `const users = await db.select().from(usersTable).limit(20);`,
   },
+  {
+    id: "drizzle-count-aggregation",
+    rule: "(aucune)",
+    filename: "safe-stats.ts",
+    code: `const users = await db.select({ n: count() }).from(usersTable);`,
+  },
 ];
 
 export type TestResult = {

@@ -407,12 +407,12 @@ const tasks = await prisma.task.findMany({
 
   {
     id: "drizzle-select-no-limit",
-    pattern: /\.select\s*\([\s\S]*?\.from\s*\((?![\s\S]{0,120}\.limit\b)/,
+    pattern: /\.select\s*\((?![\s\S]*?count\(\))[\s\S]*?\.from\s*\((?![\s\S]{0,120}\.limit\b)/,
     extensions: ["ts", "tsx"],
     onePerFile: true,
     match: (line, filePath, lineNumber) => ({
       title: "Requête Drizzle sans pagination (select().from() sans limit)",
-      description: `Une requête Drizzle select().from() sans .limit() est appelée dans ${filePath}:${lineNumber}. Elle charge toutes les lignes de la table.`,
+      description: `Une requête Drizzle select().from() sans .limit() est appelée dans ${filePath}:${lineNumber}. Elle charge toutes les lignes de la table (sauf si elle utilise count() pour une agrégation).`,
       plainLanguage:
         "Votre page charge TOUT le contenu de la base d'un coup. Plus vous avez d'utilisateurs et de données, plus c'est lent — et ça finit par saturer votre serveur et faire grimper vos coûts.",
       severity: "medium",
